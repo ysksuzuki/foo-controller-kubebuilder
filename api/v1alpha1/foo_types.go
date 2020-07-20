@@ -20,25 +20,28 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // FooSpec defines the desired state of Foo
 type FooSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Format:=string
 
-	// Foo is an example field of Foo. Edit Foo_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	DeploymentName string `json:"deploymentName"`
+
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Format:=Minimum=0
+
+	Replicas *int32 `json:"replicas"`
 }
 
 // FooStatus defines the observed state of Foo
 type FooStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+
+	// +optional
+	AvailableReplicas int32 `json:"availableReplicas"`
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
 
 // Foo is the Schema for the foos API
 type Foo struct {
